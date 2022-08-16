@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Configuration后面的status，这个用于设置log4j2自身内部的信息输出，可以不设置，当设置成trace时，
+ 你会看到log4j2内部各种详细输出。可以设置成OFF(关闭)或Error(只输出错误信息)
+-->
+<Configuration status="error" monitorInterval="60">
+    <!-- 日志文件目录和压缩文件目录配置 -->
+    <Properties>
+        <Property name="level">debug</Property>
+        <Property name="fileName">./logs/test-program</Property>
+        <Property name="fileGz">./logs/test-program</Property>
+        <Property name="LOG_PATTERN">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %logger{36}.%M[%L] - %msg%xEx%n ${event:ThreadId} ${java:version}
+        </Property>
+    </Properties>
+
+    <Appenders>
+        <!-- 输出控制台日志的配置 -->
+        <Console name="console" target="SYSTEM_OUT">
+            <!--控制台只输出level及以上级别的信息（onMatch），其他的直接拒绝（onMismatch）-->
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <!-- 输出日志的格式 -->
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+        </Console>
+
+        <!-- 打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
+        <RollingRandomAccessFile name="appLogAppender" fileName="${fileName}/app.log" immediateFlush="false"
+                                 filePattern="${fileGz}/$${date:yyyy-MM}/app-%d{MM-dd-yyyy}-%i.gz">
+            <PatternLayout pattern="${LOG_PATTERN}"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="100 MB"/>
+            </Policies>
+            <Filters>
+                <!--如果日志事件LogEvent中有COLLECTED标记，则直接拒绝这个日志事件-->
+                <MarkerFilter marker="COLLECTED" onMatch="DENY" onMismatch="NEUTRAL"/>
+                <!--如果日志事件LogEvent中的日志等级为${level}及以上，则接受这个日志事件-->
+                <ThresholdFilter level="${level}" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <!-- 指定每天的最大压缩包个数，默认7个，超过了会覆盖之前的 -->
+            <DefaultRolloverStrategy max="10"/>
+        </RollingRandomAccessFile>
+
+        <!-- 打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->
+        <RollingRandomAccessFile name="collectedLogAppender" fileName="${fileName}/collected.log" immediateFlush="false"
+                                 filePattern="${fileGz}/$${date:yyyy-MM}/collected-%d{MM-dd-yyyy}-%i.gz">
+            <PatternLayout pattern="%msg%xEx%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy interval="6" modulate="true"/>
+                <SizeBasedTriggeringPolicy size="500 MB"/>
+            </Policies>
+            <Filters>
+                <!--如果日志事件LogEvent中有COLLECTED标记，则继续走接下来的filter，如果接下来没有其他的filter，onMatch的动作填ACCEPT就好了-->
+                <MarkerFilter marker="COLLECTED" onMatch="NEUTRAL" onMismatch="DENY"/>
+                <ThresholdFilter level="${level}" onMatch="ACCEPT" onMismatch="DENY"/>
+            </Filters>
+            <!-- 指定每天的最大压缩包个数，默认7个，超过了会覆盖之前的 -->
+            <DefaultRolloverStrategy max="1000"/>
+        </RollingRandomAccessFile>
+
+    </Appenders>
+
+    <!-- 全局配置，默认所有的Logger都继承此配置 -->
+    <Loggers>
+        <Logger name="abc" level="info" additivity="true">
+            <AppenderRef ref="console"/>
+        </Logger>
+        <Root level="${level}" additivity="false">
+            <AppenderRef ref="collectedLogAppender"/>
+            <AppenderRef ref="appLogAppender"/>
+            <AppenderRef ref="console"/>
+        </Root>
+    </Loggers>
+</Configuration>
+

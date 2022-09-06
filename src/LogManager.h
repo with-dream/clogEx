@@ -13,7 +13,7 @@ namespace log4cpp2 {
 
     class LogManager {
     protected:
-        std::map<std::pair<std::string, MessageFactory *>, Logger *> loggerMap;
+        std::map<std::pair<const std::string, MessageFactory *>, Logger *> loggerMap;
     public:
         Config config;
 
@@ -25,7 +25,7 @@ namespace log4cpp2 {
         void release();
 
         Logger *getLogger(const char *name);
-        Logger *getLogger(const char *name, MessageFactory &factory);
+        Logger *getLogger(const char *name, MessageFactory *factory);
     };
 
 } // log4cpp2

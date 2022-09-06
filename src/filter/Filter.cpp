@@ -5,4 +5,5 @@
 #include "Filter.h"
 
 namespace log4cpp2 {
+
 } // log4cpp2

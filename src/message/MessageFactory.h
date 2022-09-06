@@ -5,10 +5,15 @@
 #ifndef LOGEX_MESSAGEFACTORY_H
 #define LOGEX_MESSAGEFACTORY_H
 
+#include <string>
+#include "Message.h"
+
 namespace log4cpp2 {
 
     class MessageFactory {
-
+    public:
+        virtual Message *newMessage(const std::string &msg) = 0;
+        virtual Message *newMessage(const std::string &msg, ...) = 0;
     };
 
 } // log4cpp2

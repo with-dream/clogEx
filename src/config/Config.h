@@ -20,6 +20,7 @@ namespace log4cpp2 {
         std::map<std::string, std::string> property;
         std::map<std::string, Appender *> appender;
         std::map<std::string, Logger *> logger;
+        std::vector<Filter *> filters;
     };
 }
 #endif //LOGEX_CONFIG_H

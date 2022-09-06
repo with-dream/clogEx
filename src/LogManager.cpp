@@ -28,7 +28,7 @@ namespace log4cpp2 {
 
     }
 
-    Logger *LogManager::getLogger(const char *name, MessageFactory &factory) {
+    Logger *LogManager::getLogger(const char *name, MessageFactory *factory) {
 
     }
 } // log4cpp2

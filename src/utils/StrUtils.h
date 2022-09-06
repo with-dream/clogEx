@@ -11,6 +11,7 @@
 #include <iostream>
 #include <sstream>
 #include "Exception.h"
+#include <vector>
 
 #define CLASS_NAME(name) #name
 

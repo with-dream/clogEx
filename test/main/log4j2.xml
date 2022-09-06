@@ -12,6 +12,12 @@
         </Property>
     </Properties>
 
+    <Filters>
+
+    </Filters>
+    <MarkerFilter marker="COLLECTED_global2" onMatch="DENY" onMismatch="NEUTRAL"/>
+    <MarkerFilter marker="COLLECTED_global1" onMatch="DENY" onMismatch="NEUTRAL"/>
+
     <Appenders>
         <!-- 输出控制台日志的配置 -->
         <Console name="console" target="SYSTEM_OUT">
@@ -64,7 +70,12 @@
             <AppenderRef ref="console"/>
         </Logger>
         <Root level="${level}" additivity="false">
-            <AppenderRef ref="collectedLogAppender"/>
+            <MarkerFilter marker="COLLECTED_root2" onMatch="DENY" onMismatch="NEUTRAL"/>
+            <MarkerFilter marker="COLLECTED_root1" onMatch="DENY" onMismatch="NEUTRAL"/>
+
+            <AppenderRef ref="collectedLogAppender">
+                <MarkerFilter marker="COLLECTED_ref" onMatch="DENY" onMismatch="NEUTRAL"/>
+            </AppenderRef>
             <AppenderRef ref="appLogAppender"/>
             <AppenderRef ref="console"/>
         </Root>

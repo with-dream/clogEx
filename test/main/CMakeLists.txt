@@ -2,7 +2,6 @@ cmake_minimum_required(VERSION 3.16.2)
 project(logEx)
 
 set(CMAKE_CXX_STANDARD 11)
-#../../src/config/config.c ../../src/config/config.h ../../src/utils/hash_map.c ../../src/utils/hash_map.h ../../src/utils/type.h ../../src/utils/hash_map_str.c ../../src/utils/hash_map_str.h
 
 set(src_list
         ../../third_party/tinyxml2/tinyxml2.cpp
@@ -45,7 +44,11 @@ set(src_list
         ../../src/message/Message.cpp
         ../../src/message/Message.h
         ../../src/marker/Marker.cpp
-        ../../src/marker/Marker.h)
+        ../../src/marker/Marker.h
+        ../../src/filter/FilterUtils.cpp
+        ../../src/filter/FilterUtils.h
+        ../../src/message/LogEvent.cpp
+        ../../src/message/LogEvent.h)
 
 add_executable(logEx
         ${src_list}

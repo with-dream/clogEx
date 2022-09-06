@@ -8,8 +8,7 @@
         <Property name="level">debug</Property>
         <Property name="fileName">./logs/test-program</Property>
         <Property name="fileGz">./logs/test-program</Property>
-        <Property name="LOG_PATTERN">
-            %d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %logger{36}.%M[%L] - %msg%xEx%n ${event:ThreadId} ${java:version}
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %logger{36}.%M[%L] - %msg%xEx%n ${event:ThreadId} ${java:version}
         </Property>
     </Properties>
 

@@ -19,7 +19,7 @@ namespace log4cpp2 {
     public:
         std::string name;
         std::vector<Filter *> filters;
-        std::map<const std::string, std::vector<Filter *>> refFilters;
+        std::map<const std::string, Filter *> refFilters;
         Layout *layout;
         std::vector<Policy *> policies;
     public:

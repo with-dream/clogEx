@@ -3,45 +3,77 @@
 //
 
 #include "Logger.h"
+
+#include <utility>
 #include "../config/Parse.h"
-#include <stdio.h>
+#include "LoggerContext.h"
+#include "../filter/Filter.h"
+#include "../message/SampleMessage.h"
+#include "../marker/Marker.h"
+#include "../message/Message.h"
+#include "../message/MessageFactory.h"
 
 namespace log4cpp2 {
-    void Logger::initParam(std::map<std::string, std::string> &param) {
-        this->name = param[Parse::param_name];
-        this->additivity = param[Parse::param_additivity].empty() || StrUtils::toBool(param[Parse::param_additivity]);
-    }
-
-    void Logger::log(Level &level, Marker *marker, std::string msg, ...) {
-        //TODO
-//        va_list arg_ptr;
-//        va_start(arg_ptr, fmt);
-//        std::string str = StrUtils::format(fmt.c_str(), arg_ptr);
-//        va_end(arg_ptr);
-        va_list arg;
-        va_start(arg, msg);
-        if (isEnable(level, marker, msg, arg)) {
-            logMessage(level, marker, messageFactory->newMessage(msg, arg));
+    void Logger::log(const Level &level, Marker *marker, std::string msg, ...) {
+        va_list args;
+        va_start(args, msg);
+        if (isEnable(level, marker, msg, args)) {
+            logMessage(level, marker, messageFactory->newMessage(msg, args));
         }
-        va_end(arg);
+        va_end(args);
     }
 
-    void Logger::log(Level &level, Marker *marker, Message *msg) {
+    void Logger::log(const Level &level, Marker *marker, Message *msg) {
         if (isEnable(level, marker, msg)) {
             logMessage(level, marker, msg);
         }
     }
 
-    void Logger::log(Level &level, Message *msg) {
+    void Logger::log(const Level &level, Message *msg) {
         log(level, nullptr, msg);
     }
 
-    void Logger::log(Level &level, std::string msg, ...) {
-        va_list arg;
-        va_start(arg, msg);
-        if (isEnable(level, nullptr, msg, arg)) {
-            logMessage(level, nullptr, messageFactory->newMessage(msg, arg));
+    void Logger::log(const Level &level, std::string msg, ...) {
+        va_list args;
+        va_start(args, msg);
+        if (isEnable(level, nullptr, msg, args)) {
+            logMessage(level, nullptr, messageFactory->newMessage(msg, args));
         }
-        va_end(arg);
+        va_end(args);
+    }
+
+    Logger::Logger() {
+    }
+
+    Logger::Logger(LoggerContext *context, const std::string &name, MessageFactory *factory)
+            : logContext(context), name(name), messageFactory(factory) {
+
+    }
+
+    bool Logger::isEnable(const Level &level, Marker *marker, Message *msg) {
+        for (auto &it:this->logContext->config->filters) {
+            auto res = it->filter(level, marker, msg);
+            if (res != NEUTRAL)
+                return res == ACCEPT;
+        }
+        return true;
+    }
+
+    bool Logger::isEnable(const Level &level, Marker *marker, std::string &msg, ...) {
+        va_list args;
+        va_start(args, msg);
+
+        for (auto &it:this->logContext->config->filters) {
+            auto res = it->filter(level, marker, msg, args);
+            if (res != NEUTRAL)
+                return res == ACCEPT;
+        }
+
+        va_end(args);
+        return true;
+    }
+
+    void Logger::logMessage(const Level &level, Marker *marker, Message *msg) {
+        std::cout << level.name << " logMessage " << ((SampleMessage *) msg)->msg << std::endl;
     }
 } // log4cpp2

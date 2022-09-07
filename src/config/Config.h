@@ -9,7 +9,7 @@
 #include <map>
 #include "Level.h"
 #include "../appender/Appender.h"
-#include "../logger/Logger.h"
+#include "../logger/LoggerContext.h"
 #include "Param.h"
 
 namespace log4cpp2 {
@@ -19,7 +19,8 @@ namespace log4cpp2 {
         long monitorInterval;
         std::map<std::string, std::string> property;
         std::map<std::string, Appender *> appender;
-        std::map<std::string, Logger *> logger;
+        std::map<std::string, LoggerContext *> loggerContext;
+        LoggerContext *rootLoggerContext;
         std::vector<Filter *> filters;
     };
 }

@@ -51,7 +51,14 @@ set(src_list
         ../../src/message/LogEvent.h
         ../../src/utils/FileUtils.cpp
         ../../src/utils/FileUtils.h
-        )
+        ../../src/filter/ListWrapFilter.cpp
+        ../../src/filter/ListWrapFilter.h
+        ../../src/logger/LoggerContext.cpp
+        ../../src/logger/LoggerContext.h
+        ../../src/message/SampleMessage.cpp
+        ../../src/message/SampleMessage.h
+        ../../src/message/FormatMessageFactory.cpp
+        ../../src/message/FormatMessageFactory.h)
 
 add_executable(logEx
         ${src_list}

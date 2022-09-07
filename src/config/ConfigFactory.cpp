@@ -4,18 +4,17 @@
 
 #include "ConfigFactory.h"
 
-#include "../utils/StrUtils.h"
 #include "../appender/Console.h"
 #include "../filter/ThresholdFilter.h"
 #include "../layout/PatternLayout.h"
 #include "Parse.h"
-#include "../utils/Exception.h"
+#include "../filter/ListWrapFilter.h"
 
 namespace log4cpp2 {
     void ConfigFactory::createAppenderList(Config *config, std::vector<Param *> &appVector) {
         for (auto &it: appVector) {
             Appender *app = createAppender(it);
-            if(!app) {
+            if (!app) {
                 //TODO
                 continue;
             }
@@ -33,17 +32,38 @@ namespace log4cpp2 {
         return res;
     }
 
-    void ConfigFactory::createAppenderItem(std::string &tag, std::map<std::string, std::string> &param, Appender *appender) {
-        if (StrUtils::icompare(tag, ThresholdFilter::TAG)) {
-            appender->filters.push_back(new ThresholdFilter(param));
-        } else if (StrUtils::icompare(tag, PatternLayout::TAG)) {
+    void
+    ConfigFactory::createAppenderItem(std::string &tag, std::map<std::string, std::string> &param, Appender *appender) {
+        if (StrUtils::icompare(tag, PatternLayout::TAG)) {
             appender->layout = new PatternLayout(param);
         }
     }
 
+    Filter *ConfigFactory::createFilter(Param *param) {
+        if (StrUtils::icompare(param->tag, Parse::Filters)) {
+            if (!param->child.empty()) {
+                auto filterList = new ListWrapFilter();
+                for (auto it:param->child) {
+                    Filter *filter = createFilter(it);
+                    filterList->addFilter(filter);
+                }
+                return filterList;
+            }
+            return nullptr;
+        } else if (StrUtils::icompare(param->tag, ThresholdFilter::TAG)) {
+            return new ThresholdFilter(param->attr);
+        }
+        return nullptr;
+    }
+
     void ConfigFactory::createAppenderItemList(std::vector<Param *> &item, Appender *appender) {
         for (auto &it: item) {
-            createAppenderItem(it->tag, it->attr, appender);
+            Filter *filter = createFilter(it);
+            if (filter) {
+                appender->filters.push_back(filter);
+            } else {
+                createAppenderItem(it->tag, it->attr, appender);
+            }
             if (!it->child.empty())
                 createAppenderItemList(it->child, appender);
         }
@@ -68,8 +88,16 @@ namespace log4cpp2 {
                 createLoggerList(config, it->child);
             } else if (StrUtils::icompare(it->tag, Parse::Properties)) {
                 config->property = it->attr;
+            } else {
+                Filter *filter = createFilter(it);
+                if (filter) {
+                    config->filters.push_back(filter);
+                } else {
+                    //TODO
+                }
             }
         }
+        return 0;
     }
 
     void ConfigFactory::createLoggerList(Config *config, std::vector<Param *> &child) {
@@ -77,24 +105,43 @@ namespace log4cpp2 {
             if (StrUtils::icompare(it->tag, Parse::Logger)
                 || StrUtils::icompare(it->tag, Parse::Root)) {
                 auto logger = createLogger(config, it);
-                config->logger[logger->name] = logger;
+                config->loggerContext[logger->name] = logger;
+
+                if (StrUtils::icompare(it->tag, Parse::Root)) {
+                    config->rootLoggerContext = logger;
+                }
             } else {
                 //TODO
             }
         }
     }
 
-    Logger *ConfigFactory::createLogger(Config *config, Param *param) {
-        auto logger = new Logger();
-        logger->initParam(param->attr);
+    LoggerContext *ConfigFactory::createLogger(Config *config, Param *param) {
+        auto logger = new LoggerContext();
+        logger->initParam(config, param->attr);
 
-        for (auto &logIt: param->child) {
-            if (StrUtils::icompare(param->tag, Parse::AppenderRef)) {
-                std::string ref = param->attr[Parse::param_ref];
+        for (auto &it: param->child) {
+            if (StrUtils::icompare(it->tag, Parse::AppenderRef)) {
+                std::string ref = it->attr[Parse::param_ref];
                 Appender *appender = config->appender[ref];
                 logger->appender.push_back(appender);
+
+                if (!it->child.empty()) {
+                    for (auto &filterIt:it->child) {
+                        Filter *filter = createFilter(filterIt);
+                        if (filter) {
+                            appender->refFilters[param->attr[Parse::param_name]] = filter;
+                        }
+                    }
+                }
+            } else {
+                Filter *filter = createFilter(it);
+                if (filter) {
+                    logger->filters.push_back(filter);
+                }
             }
         }
         return logger;
     }
+
 } // log4cpp2

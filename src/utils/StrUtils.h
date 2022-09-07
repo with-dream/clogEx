@@ -57,8 +57,8 @@ public:
         return str.c_str();
     }
 
-    template <typename ...Args>
-    inline static std::string format(const char* format, Args... args) {
+    template<typename ...Args>
+    inline static std::string format(const char *format, Args... args) {
         constexpr size_t oldlen = BUFSIZ;
         char buffer[oldlen];  // 默认栈上的缓冲区
 
@@ -71,7 +71,15 @@ public:
             return std::string(newbuffer.data());
         }
 
-        return buffer;
+        std::string res(buffer);
+        res.shrink_to_fit();
+        return res;
+    }
+
+    static inline std::string&& removeLastSection(std::string &str) {
+        std::string::size_type pos = str.rfind('.');
+        std::string res = str.substr(0, pos);
+        return std::move(res);
     }
 };
 

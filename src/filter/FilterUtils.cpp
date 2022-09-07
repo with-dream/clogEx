@@ -18,15 +18,15 @@ namespace log4cpp2 {
 
     Result FilterUtils::filter(std::vector<Filter *> &filters, Level &level, Marker *marker, std::string msg, ...) {
         Result res;
-        va_list arg;
-        va_start(arg, msg);
+        va_list args;
+        va_start(args, msg);
 
         for (auto &it:filters) {
-            res = it->filter(level, marker, msg, arg);
+            res = it->filter(level, marker, msg, args);
             if (res == ACCEPT || res == DENY)
                 break;
         }
-        va_end(arg);
+        va_end(args);
         return res;
     }
 

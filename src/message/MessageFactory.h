@@ -14,6 +14,7 @@ namespace log4cpp2 {
     public:
         virtual Message *newMessage(const std::string &msg) = 0;
         virtual Message *newMessage(const std::string &msg, ...) = 0;
+        virtual std::string getTag() = 0;
     };
 
 } // log4cpp2

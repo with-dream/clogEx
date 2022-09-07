@@ -26,9 +26,11 @@ namespace log4cpp2 {
 
         void createAppenderItem(std::string &tag, std::map<std::string, std::string> &param, Appender *appender);
 
+        Filter *createFilter(Param *param);
+
         void createLoggerList(Config *config, std::vector<Param *> &child);
 
-        Logger *createLogger(Config *config, Param *param);
+        LoggerContext *createLogger(Config *config, Param *param);
     };
 
 } // log4cpp2

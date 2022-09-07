@@ -6,53 +6,45 @@
 #define LOGEX_LOGGER_H
 
 #include <vector>
-#include "../appender/Appender.h"
 #include "../config/Level.h"
-#include "../marker/Marker.h"
-#include "../message/Message.h"
-#include "../message/MessageFactory.h"
-#include "../filter/FilterUtils.h"
 
 namespace log4cpp2 {
+    class LoggerContext;
+    class MessageFactory;
+    class Marker;
+    class Message;
 
     class Logger {
-    private:
+    public:
+        const std::string name;
+        LoggerContext *logContext;
         MessageFactory *messageFactory;
-    public:
-        std::string name;
-        bool additivity;
-        Level loggerLevel;
-        std::vector<Appender *> appender;
-        std::vector<Filter *> filters;
 
     public:
-        void initParam(std::map<std::string, std::string> &param);
+        Logger();
 
-        void log(Level &level, Marker *marker, Message *msg);
+        Logger(LoggerContext *context, const std::string &name, MessageFactory *factory);
 
-        void log(Level &level, Message *msg);
+        void log(const Level &level, Marker *marker, Message *msg);
 
-        void log(Level &level, Marker *marker, std::string msg, ...);
+        void log(const Level &level, Message *msg);
 
-        void log(Level &level, std::string msg, ...);
+        void log(const Level &level, Marker *marker, std::string msg, ...);
 
-        virtual bool isEnable(Level &level, Marker *marker, Message *msg) {
-            return true;
-        }
-
-        virtual bool isEnable(Level &level, Marker *marker, std::string &msg, ...) {
-            return true;
-        }
-
-        virtual void logMessage(Level &level, Marker *marker, Message *msg) {
-
-        }
+        void log(const Level &level, std::string msg, ...);
 //        void trace();
 //        void info();
 //        void debug();
 //        void warn();
 //        void error();
 //        void fatal();
+
+    protected:
+        virtual bool isEnable(const Level &level, Marker *marker, Message *msg);
+
+        virtual bool isEnable(const Level &level, Marker *marker, std::string &msg, ...);
+
+        virtual void logMessage(const Level &level, Marker *marker, Message *msg);
     };
 
 } // log4cpp2

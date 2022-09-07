@@ -13,9 +13,10 @@ namespace log4cpp2 {
 
     class LogManager {
     protected:
-        std::map<std::pair<const std::string, MessageFactory *>, Logger *> loggerMap;
+        std::map<std::pair<const std::string, const std::string>, Logger *> loggerMap;
     public:
         Config config;
+        MessageFactory *defaultMessageFactory;
 
     protected:
         void doConfig(Param &param, ConfigFactory *factory);

@@ -48,7 +48,10 @@ set(src_list
         ../../src/filter/FilterUtils.cpp
         ../../src/filter/FilterUtils.h
         ../../src/message/LogEvent.cpp
-        ../../src/message/LogEvent.h)
+        ../../src/message/LogEvent.h
+        ../../src/utils/FileUtils.cpp
+        ../../src/utils/FileUtils.h
+        )
 
 add_executable(logEx
         ${src_list}

@@ -4,6 +4,7 @@
 
 #include "LogManager.h"
 #include "./config/TinyXmlParse.h"
+#include "./utils/FileUtils.h"
 
 namespace log4cpp2 {
     int LogManager::init(const char *path, Parse *parse, ConfigFactory *factory) {
@@ -13,7 +14,18 @@ namespace log4cpp2 {
     }
 
     int LogManager::init(const char *path) {
+        std::string suffix = FileUtils::getFileSuffix(path);
+        Parse *parse = nullptr;
+        if (StrUtils::icompare("xml", suffix)) {
+            parse = new TinyXmlParse();
+        }
 
+        if (!parse) {
+            return -1;
+        }
+
+        init(path, parse, new ConfigFactory());
+        return 0;
     }
 
     void LogManager::release() {

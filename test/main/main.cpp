@@ -8,17 +8,14 @@
 
 using namespace std;
 
+#include <map>
+#include <memory>
+
+//https://github.com/rttrorg/rttr
 int main() {
-//    auto xmlParse = new log4cpp2::XmlParse();
-//    xmlParse->parseInit("../log4j2.xml", nullptr);
+    auto manager = new log4cpp2::LogManager();
+    int ret = manager->init("../log4j2.xml");
+    cout << "init ret==>" << ret << endl;
 
-    map<string, string> m1, m2;
-    m1["111"] = "111";
-    m1["222"] = "222";
-    m1["333"] = "333";
-
-    m2 = m1;
-    m1.clear();
-    cout << m2["111"] << "==" << StrUtils::toBool("true") << endl;
     return 0;
 }

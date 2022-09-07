@@ -11,7 +11,7 @@
 
 namespace log4cpp2 {
 
-    class TinyXmlParse : Parse {
+    class TinyXmlParse : public Parse {
     private:
     private:
         const tinyxml2::XMLElement *isElement(const tinyxml2::XMLNode *node);

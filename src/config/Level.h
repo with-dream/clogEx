@@ -11,15 +11,15 @@
 
 namespace log4cpp2 {
     typedef enum {
-        UNKNOW_INT = -1,
-        OFF_INT = 0,
-        FATAL_INT = 100,
-        ERROR_INT = 200,
-        WARN_INT = 300,
-        INFO_INT = 400,
-        DEBUG_INT = 500,
-        TRACE_INT = 600,
-        ALL_INT = 1000,
+        UNKNOW_INT = 20000,
+        OFF_INT = 10000,
+        FATAL_INT = 6000,
+        ERROR_INT = 5000,
+        WARN_INT = 4000,
+        INFO_INT = 3000,
+        DEBUG_INT = 2000,
+        TRACE_INT = 1000,
+        ALL_INT = 0,
     } LevelValue;
 
     typedef struct _Level {
@@ -29,6 +29,10 @@ namespace log4cpp2 {
 
         bool operator==(const struct _Level &l) const {
             return l.level == level && StrUtils::compare(l.name, name) && StrUtils::compare(l.sample, sample);
+        }
+
+        bool operator>=(const struct _Level &l) const {
+            return level >= l.level;
         }
     } Level;
 

@@ -12,6 +12,7 @@
 #include "../message/Message.h"
 #include "../message/MessageFactory.h"
 #include "../filter/FilterUtils.h"
+#include "../message/LogEventFactory.h"
 
 namespace log4cpp2 {
     class Logger;
@@ -24,6 +25,7 @@ namespace log4cpp2 {
         Level loggerLevel;
         std::vector<Appender *> appender;
         std::vector<Filter *> filters;
+        LogEventFactory *logEventFactory;
 
     public:
         void initParam(Config *config, std::map<std::string, std::string> &param);

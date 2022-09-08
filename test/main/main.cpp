@@ -1,7 +1,5 @@
 #include <iostream>
 #include <string>
-#include "../../src/config/TinyXmlParse.h"
-#include "../../src/utils/Exception.h"
 #include "../../src/message/MessageFactory.h"
 #include "../../src/logger/Logger.h"
 #include "../../src/LogManager.h"

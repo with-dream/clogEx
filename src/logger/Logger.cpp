@@ -7,13 +7,17 @@
 #include <utility>
 #include "../config/Parse.h"
 #include "LoggerContext.h"
-#include "../filter/Filter.h"
 #include "../message/SampleMessage.h"
-#include "../marker/Marker.h"
-#include "../message/Message.h"
-#include "../message/MessageFactory.h"
 
 namespace log4cpp2 {
+    Logger::Logger() {
+    }
+
+    Logger::Logger(LoggerContext *context, const std::string &name, MessageFactory *factory)
+            : logContext(context), name(name), messageFactory(factory) {
+
+    }
+
     void Logger::log(const Level &level, Marker *marker, std::string msg, ...) {
         va_list args;
         va_start(args, msg);
@@ -42,38 +46,34 @@ namespace log4cpp2 {
         va_end(args);
     }
 
-    Logger::Logger() {
-    }
-
-    Logger::Logger(LoggerContext *context, const std::string &name, MessageFactory *factory)
-            : logContext(context), name(name), messageFactory(factory) {
-
-    }
-
     bool Logger::isEnable(const Level &level, Marker *marker, Message *msg) {
-        for (auto &it:this->logContext->config->filters) {
+        for (auto &it: this->logContext->config->filters) {
             auto res = it->filter(level, marker, msg);
             if (res != NEUTRAL)
                 return res == ACCEPT;
         }
-        return true;
+        return level >= logContext->loggerLevel;
     }
 
     bool Logger::isEnable(const Level &level, Marker *marker, std::string &msg, ...) {
         va_list args;
         va_start(args, msg);
 
-        for (auto &it:this->logContext->config->filters) {
+        for (auto &it: this->logContext->config->filters) {
             auto res = it->filter(level, marker, msg, args);
             if (res != NEUTRAL)
                 return res == ACCEPT;
         }
 
         va_end(args);
-        return true;
+        return level >= logContext->loggerLevel;
     }
 
     void Logger::logMessage(const Level &level, Marker *marker, Message *msg) {
         std::cout << level.name << " logMessage " << ((SampleMessage *) msg)->msg << std::endl;
+        auto res = FilterUtils::filter(logContext->filters, level, marker, msg);
+        if (res != DENY) {
+            LogEvent *logEvent = logContext->logEventFactory->createLogEvent(name, level, marker, msg);
+        }
     }
 } // log4cpp2

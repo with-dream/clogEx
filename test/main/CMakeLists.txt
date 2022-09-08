@@ -39,15 +39,12 @@ set(src_list
         ../../src/LogManager.h
         ../../src/message/MessageFactory.cpp
         ../../src/message/MessageFactory.h
-        ../../src/config/LoggerConfig.cpp
-        ../../src/config/LoggerConfig.h
         ../../src/message/Message.cpp
         ../../src/message/Message.h
         ../../src/marker/Marker.cpp
         ../../src/marker/Marker.h
         ../../src/filter/FilterUtils.cpp
         ../../src/filter/FilterUtils.h
-        ../../src/message/LogEvent.cpp
         ../../src/message/LogEvent.h
         ../../src/utils/FileUtils.cpp
         ../../src/utils/FileUtils.h
@@ -58,7 +55,10 @@ set(src_list
         ../../src/message/SampleMessage.cpp
         ../../src/message/SampleMessage.h
         ../../src/message/FormatMessageFactory.cpp
-        ../../src/message/FormatMessageFactory.h)
+        ../../src/message/FormatMessageFactory.h
+        ../../src/message/LogEventFactory.cpp
+        ../../src/message/LogEventFactory.h
+        ../../src/message/NormalLogEvent.cpp ../../src/message/NormalLogEvent.h)
 
 add_executable(logEx
         ${src_list}

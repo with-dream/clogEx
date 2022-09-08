@@ -15,11 +15,11 @@
 namespace log4cpp2 {
     class FilterUtils {
     public:
-        static inline Result filter(std::vector<Filter *> &filters, Level &level, Marker *marker, Message *msg);
+        static Result filter(std::vector<Filter *> &filters, const Level &level, Marker *marker, Message *msg);
 
-        static inline Result filter(std::vector<Filter *> &filters, Level &level, Marker *marker, std::string msg, ...);
+        static Result filter(std::vector<Filter *> &filters, const Level &level, Marker *marker, std::string msg, ...);
 
-        static inline Result filter(std::vector<Filter *> &filters, LogEvent *logEvent);
+        static Result filter(std::vector<Filter *> &filters, LogEvent *logEvent);
     };
 }
 

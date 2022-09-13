@@ -5,4 +5,8 @@
 #include "Message.h"
 
 namespace log4cpp2 {
+
+    std::string Message::getMsg() {
+        return "";
+    }
 } // log4cpp2

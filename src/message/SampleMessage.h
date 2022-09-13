@@ -16,6 +16,8 @@ namespace log4cpp2 {
         SampleMessage();
 
         SampleMessage(const std::string msg);
+
+        std::string getMsg();
     };
 }
 

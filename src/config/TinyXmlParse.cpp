@@ -28,6 +28,9 @@ namespace log4cpp2 {
                 auto param = new Param();
                 param->tag = childNode->Name();
                 parseAttr(childNode, param->attr);
+                if (childNode->GetText())
+                    param->text = childNode->GetText();
+
                 pairNode.second->child.push_back(param);
 
                 list.emplace_back(childNode, param);

@@ -58,7 +58,23 @@ set(src_list
         ../../src/message/FormatMessageFactory.h
         ../../src/message/LogEventFactory.cpp
         ../../src/message/LogEventFactory.h
-        ../../src/message/NormalLogEvent.cpp ../../src/message/NormalLogEvent.h)
+        ../../src/message/NormalLogEvent.cpp
+        ../../src/message/NormalLogEvent.h
+        ../../src/config/PatternParse.cpp
+        ../../src/config/PatternParse.h
+        ../../src/config/FormatParam.cpp
+        ../../src/config/FormatParam.h
+        ../../src/utils/L.h
+        ../../src/lookup/Lookup.cpp
+        ../../src/lookup/Lookup.h
+        ../../src/lookup/LookupResult.cpp
+        ../../src/lookup/LookupResult.h
+        ../../src/lookup/DefaultLookupResult.cpp
+        ../../src/lookup/DefaultLookupResult.h
+        ../../src/lookup/ContextMapLookup.cpp
+        ../../src/lookup/ContextMapLookup.h
+        ../../src/utils/TimeUtils.h
+        ../../src/platform/console/MultipleConsole.h ../../src/platform/console/PCConsole.cpp ../../src/platform/console/PCConsole.h ../../src/platform/console/MultipleConsole.cpp ../../src/filter/FilterResult.h)
 
 add_executable(logEx
         ${src_list}

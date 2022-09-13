@@ -8,15 +8,17 @@
 #include <map>
 
 #include "Layout.h"
+#include "../config/Config.h"
 
 namespace log4cpp2 {
 
     class PatternLayout : public Layout{
     public:
         static const char *TAG;
+        Config *config;
     public:
         PatternLayout(){}
-        PatternLayout(std::map<std::string, std::string> &param);
+        PatternLayout(Config *config, std::map<std::string, std::string> &param);
     };
 
 } // log4cpp2

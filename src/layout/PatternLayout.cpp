@@ -8,7 +8,8 @@
 namespace log4cpp2 {
     const char *PatternLayout::TAG = CLASS_NAME(PatternLayout);
 
-    PatternLayout::PatternLayout(std::map<std::string, std::string> &param) {
+    PatternLayout::PatternLayout(Config *config, std::map<std::string, std::string> &param)
+            : config(config) {
 
     }
 } // log4cpp2

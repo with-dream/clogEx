@@ -8,7 +8,10 @@
         <Property name="level">debug</Property>
         <Property name="fileName">./logs/test-program</Property>
         <Property name="fileGz">./logs/test-program</Property>
-        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} [%t] %-5level - %logger{36}.%M[%L] - %msg%xEx%n ${event:ThreadId} ${java:version}
+        <Property name="tt1">${fileGz}</Property>
+        <Property name="tt2">${tt3}</Property>
+        <Property name="tt3">${tt2}</Property>
+        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} ${ctx:t1} ${t1} ${tt2} ${tt1} [%t] %-5level - %logger{36}.%M[%L] - %msg%xEx ${event:ThreadId} ${java:version} %n
         </Property>
     </Properties>
 
@@ -25,6 +28,7 @@
             <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
             <!-- 输出日志的格式 -->
             <PatternLayout pattern="${LOG_PATTERN}"/>
+            <JsonLayout/>
         </Console>
 
         <!-- 打印出所有的信息，每次大小超过size，则这size大小的日志会自动存入按年份-月份建立的文件夹下面并进行压缩，作为存档 -->

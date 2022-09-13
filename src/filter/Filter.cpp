@@ -5,7 +5,6 @@
 #include "Filter.h"
 #include "../marker/Marker.h"
 #include "../message/Message.h"
-#include "../message/LogEvent.h"
 
 namespace log4cpp2 {
 

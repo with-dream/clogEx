@@ -16,7 +16,7 @@ namespace log4cpp2 {
 
     class LogEventFactory {
     public:
-        virtual LogEvent *createLogEvent(std::string &loggerName, Marker *marker, Level &level, Message *msg, std::map<std::string, std::string> &properties);
+        virtual LogEvent *createLogEvent(std::string &loggerName, const Level &level, Marker *marker, Message *msg, std::map<std::string, std::string> &properties);
     };
 
 } // log4cpp2

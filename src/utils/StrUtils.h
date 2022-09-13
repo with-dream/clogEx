@@ -7,7 +7,7 @@
 
 
 #include <string>
-#include <ctype.h>
+#include <cctype>
 #include <iostream>
 #include <sstream>
 #include "Exception.h"
@@ -80,6 +80,16 @@ public:
         std::string::size_type pos = str.rfind('.');
         std::string res = str.substr(0, pos);
         return std::move(res);
+    }
+
+    static inline std::vector<std::string> split(std::string &str, const char *s) {
+        std::istringstream iss(str);
+        std::string token;
+        std::vector<std::string> res;
+        while (getline(iss, token, ':')) {
+            res.push_back(token);
+        }
+        return res;
     }
 };
 

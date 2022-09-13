@@ -13,6 +13,7 @@ namespace log4cpp2 {
     class Param {
     public:
         std::string tag;
+        std::string text;
         std::map<std::string, std::string> attr;
         std::vector<Param *> child;
     public:

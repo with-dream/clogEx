@@ -23,7 +23,8 @@ namespace log4cpp2 {
         Layout *layout;
         std::vector<Policy *> policies;
     public:
-
+        void callAppender(LogEvent *logEvent);
+        virtual void realCallAppender(LogEvent *logEvent) = 0;
     };
 }
 

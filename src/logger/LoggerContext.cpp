@@ -12,6 +12,7 @@ namespace log4cpp2 {
         this->config = config;
         this->name = param[Parse::param_name];
         this->additivity = param[Parse::param_additivity].empty() || StrUtils::toBool(param[Parse::param_additivity]);
+        this->logEventFactory = new LogEventFactory();
     }
 
     Logger *LoggerContext::createLogger(const std::string &name, MessageFactory *factory) {

@@ -17,11 +17,15 @@ namespace log4cpp2 {
         if (itName == param.cend())
             THROW_ERR("Appender must have a name")
         this->name = itName->second;
+        this->sole = new MultipleConsole();
 
         auto itTarget = param.find("target");
         if (itTarget == param.cend())
             this->target = SYSTEM;
     }
 
-
+    void Console::realCallAppender(LogEvent *logEvent) {
+        std::string m = logEvent->getMsg();
+        this->sole->log(m, WARN.level);
+    }
 } // log4cpp2

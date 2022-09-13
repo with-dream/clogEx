@@ -72,8 +72,27 @@ namespace log4cpp2 {
     void Logger::logMessage(const Level &level, Marker *marker, Message *msg) {
         std::cout << level.name << " logMessage " << ((SampleMessage *) msg)->msg << std::endl;
         auto res = FilterUtils::filter(logContext->filters, level, marker, msg);
-        if (res != DENY) {
-            LogEvent *logEvent = logContext->logEventFactory->createLogEvent(name, level, marker, msg);
+        if (FilterUtils::accept(res)) {
+            std::string loggerName(name);
+            std::map<std::string, std::string> tmp;
+            LogEvent *logEvent = logContext->logEventFactory->createLogEvent(loggerName, level, marker, msg, tmp);
+            realLogMessage(logEvent);
         }
+    }
+
+    void Logger::realLogMessage(LogEvent *logEvent) {
+        if (!filter(logEvent)) return;
+
+        for (auto it: logContext->appender) {
+            it->callAppender(logEvent);
+        }
+        if (logContext->additivity && parent) {
+            parent->realLogMessage(logEvent);
+        }
+    }
+
+    bool Logger::filter(LogEvent *logEvent) {
+        Result res = FilterUtils::filter(logContext->filters, logEvent);
+        return FilterUtils::accept(res);
     }
 } // log4cpp2

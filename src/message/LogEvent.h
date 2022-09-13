@@ -5,11 +5,12 @@
 #ifndef LOGEX_LOGEVENT_H
 #define LOGEX_LOGEVENT_H
 
+namespace log4cpp2 {
+    class LogEvent {
+    public:
+        virtual std::string getMsg() = 0;
+    };
 
-class LogEvent {
-public:
-
-};
-
+}
 
 #endif //LOGEX_LOGEVENT_H

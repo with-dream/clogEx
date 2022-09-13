@@ -6,15 +6,12 @@
 #define LOGEX_FILTER_H
 
 #include "../config/Level.h"
+#include "../message/LogEvent.h"
+#include "FilterResult.h"
 
 namespace log4cpp2 {
     class Marker;
     class Message;
-    class LogEvent;
-
-    typedef enum _Result {
-        ACCEPT, NEUTRAL, DENY
-    } Result;
 
     class Filter {
     public:

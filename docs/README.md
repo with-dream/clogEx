@@ -1,7 +1,7 @@
 ThreadContextMapFilter??
 
-https://www.jianshu.com/p/c89a8b9f9859
-https://blog.csdn.net/qq_29036453/article/details/120468341
+Disruptor:https://www.jianshu.com/p/c89a8b9f9859
+Disruptor:https://blog.csdn.net/qq_29036453/article/details/120468341
 
 1、主要数据结构:
 Context
@@ -34,7 +34,11 @@ Logger
 
 4、filter
 
-https://www.yisu.com/zixun/623271.html
+filter:https://www.yisu.com/zixun/623271.html
 
 参考:
 https://www.cnblogs.com/bybeiya/p/16439440.html
+
+PatternLayout： https://logging.apache.org/log4j/2.x/manual/layouts.html#PatternLayout
+https://www.jianshu.com/p/b6409b3042e2
+

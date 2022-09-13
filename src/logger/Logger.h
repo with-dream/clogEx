@@ -13,12 +13,14 @@ namespace log4cpp2 {
     class MessageFactory;
     class Marker;
     class Message;
+    class LogEvent;
 
     class Logger {
     public:
         const std::string name;
         LoggerContext *logContext;
         MessageFactory *messageFactory;
+        Logger *parent;
 
     public:
         Logger();
@@ -45,6 +47,11 @@ namespace log4cpp2 {
         virtual bool isEnable(const Level &level, Marker *marker, std::string &msg, ...);
 
         virtual void logMessage(const Level &level, Marker *marker, Message *msg);
+
+        virtual void realLogMessage(LogEvent *logEvent);
+
+    private:
+        virtual bool filter(LogEvent *logEvent);
     };
 
 } // log4cpp2

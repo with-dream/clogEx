@@ -20,14 +20,15 @@ namespace log4cpp2 {
         Level level;
         Message *message;
         std::map<std::string, std::string> *map;
-        long threadId;
+        unsigned long int threadId;
         std::string threadName;
         int threadPriority;
         bool includeLocation;
         long nanoTime;
     public:
         NormalLogEvent();
-        NormalLogEvent(std::string loggerName, Marker *marker, Level &level, Message *message);
+        NormalLogEvent(std::string loggerName, Marker *marker, const Level &level, Message *message);
+        std::string getMsg();
     };
 
 }

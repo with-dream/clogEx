@@ -33,6 +33,7 @@ namespace log4cpp2 {
         static const char *param_status;
         static const char *param_additivity;
         static const char *param_monitorInterval;
+        static const char *param_pattern;
 
     public:
         virtual void parse(const char *path, Param *param) = 0;

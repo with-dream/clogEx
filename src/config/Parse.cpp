@@ -22,4 +22,5 @@ namespace log4cpp2 {
     const char *Parse::param_status = "status";
     const char *Parse::param_additivity = "additivity";
     const char *Parse::param_monitorInterval = "monitorInterval";
+    const char *Parse::param_pattern = "pattern";
 }

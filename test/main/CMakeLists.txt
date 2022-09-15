@@ -74,7 +74,7 @@ set(src_list
         ../../src/lookup/ContextMapLookup.cpp
         ../../src/lookup/ContextMapLookup.h
         ../../src/utils/TimeUtils.h
-        ../../src/platform/console/MultipleConsole.h ../../src/platform/console/PCConsole.cpp ../../src/platform/console/PCConsole.h ../../src/platform/console/MultipleConsole.cpp ../../src/filter/FilterResult.h)
+        ../../src/platform/console/MultipleConsole.h ../../src/platform/console/PCConsole.cpp ../../src/platform/console/PCConsole.h ../../src/platform/console/MultipleConsole.cpp ../../src/filter/FilterResult.h ../../src/layout/converter/FormatInfo.cpp ../../src/layout/converter/FormatInfo.h)
 
 add_executable(logEx
         ${src_list}

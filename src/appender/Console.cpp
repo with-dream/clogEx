@@ -14,8 +14,7 @@ namespace log4cpp2 {
 
     Console::Console(std::map<std::string, std::string> &param) {
         auto itName = param.find("name");
-        if (itName == param.cend())
-            THROW_ERR("Appender must have a name")
+        if (itName == param.cend()) THROW_ERR("Appender must have a name")
         this->name = itName->second;
         this->sole = new MultipleConsole();
 
@@ -25,7 +24,8 @@ namespace log4cpp2 {
     }
 
     void Console::realCallAppender(LogEvent *logEvent) {
-        std::string m = logEvent->getMsg();
-        this->sole->log(m, WARN.level);
+        char *msg = layout->toSerializable(logEvent);
+        std::string str(msg);
+        this->sole->log(str, WARN.level);
     }
 } // log4cpp2

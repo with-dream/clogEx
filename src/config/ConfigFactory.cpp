@@ -96,8 +96,8 @@ namespace log4cpp2 {
                 }
 
                 std::map<std::string, FormatParam *> tmpPattern;
-                std::set<std::string> set;
                 for (auto &it: config->property) {
+                    std::set<std::string> set;
                     preProperties(it.first, it.second, config->property, tmpPattern, set);
                 }
                 for (auto &it: config->property) {
@@ -131,8 +131,133 @@ namespace log4cpp2 {
         }
     }
 
+    /**
+     * 回溯算法
+     * 还有问题 待优化
+     * */
     void ConfigFactory::preProperties(std::string key, std::string &value, std::map<std::string, std::string> &property,
                                       std::map<std::string, FormatParam *> &tmpPattern, std::set<std::string> &set) {
+        L::l("preProperties==>k:" + key + " v:" + value);
+#if 1
+        if (set.count(key)) return;
+        set.insert(key);
+
+        bool change = false;
+        std::smatch match;
+        std::string::const_iterator itor = value.cbegin();
+        std::vector<std::tuple<std::string, std::string, std::string>> param;
+        while (regex_search(itor, value.cend(), match, lookupRx)) {
+            itor = match[0].second;
+//            L::l("key==>" + match[0].str() + " ss==" + std::to_string(match.size()));
+            std::string inherent = match[0].str();
+            std::string category = match[1].str();
+            std::string type = match[2].str();
+            param.emplace_back(inherent, category, type);
+        }
+
+        if (param.empty()) return;
+
+        for (auto &it: param) {
+            std::string inherent = std::get<0>(it);
+            std::string category = std::get<1>(it);
+            std::string type = std::get<2>(it);
+            std::string res = "";
+            std::string keyChild = category + (type.empty() ? "" : (":" + type));
+            L::l("search==>" + match[1].str() + "==" + match[2].str());
+
+            if (tmpPattern.count(keyChild) && tmpPattern[keyChild]->isResult) {
+                res = tmpPattern[keyChild]->param;
+            } else {
+                auto param = new FormatParam(inherent, category, type);
+                tmpPattern[keyChild] = param;
+
+                if (!type.empty()) {
+                    Lookup *lu = getLookup(param->category);
+                    if (lu)
+                        res = lu->lookup(param->type);
+                    if (!res.empty()) {
+                        param->param = res;
+                        param->isResult = true;
+                    }
+                }
+                if (res.empty() && category != key && property.count(category)) {
+                    res = property[category];
+                }
+            }
+
+            if (!res.empty()) {
+                preProperties(keyChild, res, property, tmpPattern, set);
+                set.erase(keyChild);
+
+                change = true;
+                auto pos = value.find(inherent);
+                if (pos != std::string::npos)
+                    value = value.replace(pos, inherent.length(), res);
+            }
+        }
+
+        if (!change) {
+            FormatParam *tmp = tmpPattern[key];
+            if (!tmp) {
+                tmp = new FormatParam(key, key, "");
+                tmpPattern[key] = tmp;
+            }
+            tmp->isResult = true;
+            tmp->param = value;
+        }
+#endif
+
+
+#if 0
+        std::smatch match;
+        const std::regex lookupRx(R"(\${1,2}\{([a-zA-Z0-9_]+):?([a-zA-Z0-9_]+)?\})");
+        std::string::const_iterator itor = value.cbegin();
+        bool change = false;
+        while (regex_search(itor, value.cend(), match, lookupRx)) {
+            itor = match[0].second;
+
+//            L::l("key==>" + match[0].str() + " ss==" + std::to_string(match.size()));
+//            L::l(match[1].str() + "==" + match[2].str());
+            std::string inherent = match[0].str();
+            std::string category = match[1].str();
+            std::string type = match[2].str();
+            std::string res = "";
+
+            if (tmpPattern.count(inherent) && tmpPattern[inherent]->isResult) {
+                res = tmpPattern[inherent]->param;
+            } else {
+                auto param = new FormatParam(inherent, category, type);
+                tmpPattern[inherent] = param;
+
+                if (!type.empty()) {
+                    Lookup *lu = getLookup(param->category);
+                    if (lu)
+                        res = lu->lookup(param->type);
+                    if (!res.empty()) {
+                        param->param = res;
+                        param->isResult = true;
+                    }
+                }
+                if (res.empty() && property.count(category)) {
+                    res = property[category];
+                    set.insert(inherent);
+                }
+            }
+
+            if (!res.empty()) {
+                change = true;
+                auto pos = value.find(inherent);
+                if (pos != std::string::npos)
+                    value = value.replace(pos, inherent.length(), res);
+            }
+        }
+
+        if (change) {
+            preProperties(key, value, property, tmpPattern, set);
+        }
+#endif
+
+#if 0
         std::regex_iterator<std::string::iterator> it(value.begin(), value.end(), lookupRx);
         std::regex_iterator<std::string::iterator> end;
         if (it == end) {
@@ -187,6 +312,7 @@ namespace log4cpp2 {
         }
         if (retry)
             preProperties(key, value, property, tmpPattern, set);
+#endif
     }
 
     LoggerContext *ConfigFactory::createLogger(Config *config, Param *param) {
@@ -217,7 +343,7 @@ namespace log4cpp2 {
         return logger;
     }
 
-    ConfigFactory::ConfigFactory() : lookupRx("\\$\\{.*?\\}") {
+    ConfigFactory::ConfigFactory() : lookupRx(R"(\${1,2}\{([a-zA-Z0-9_]+):?([a-zA-Z0-9_]+)?\})") {
 
     }
 

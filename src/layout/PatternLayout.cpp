@@ -3,8 +3,8 @@
 //
 
 #include "PatternLayout.h"
-#include "../utils/StrUtils.h"
 #include "../config/Parse.h"
+#include "../utils/L.h"
 
 namespace log4cpp2 {
     const char *PatternLayout::TAG = CLASS_NAME(PatternLayout);
@@ -13,7 +13,10 @@ namespace log4cpp2 {
             : config(config) {
 
         if (param.count(Parse::param_pattern)) {
-            prepare(param[Parse::param_pattern]);
+            std::string v = param[Parse::param_pattern];
+            v = v.replace(v.begin(), v.begin() + 2, "");
+            v = v.replace(v.end() - 1, v.end(), "");
+            prepare(config->property[v]);
         }
     }
 
@@ -23,21 +26,24 @@ namespace log4cpp2 {
     }
 
     void PatternLayout::prepare(std::string &pattern) {
-        std::string tmp;
-        int mode;
-        for (int i = 0; i < pattern.size(); ++i) {
-            switch (pattern[i]) {
-                case '%':
-                    mode = 1;
-                    break;
-                case '$':
-                    mode = 2;
-                    break;
-                default:
-                    tmp.push_back(pattern[i]);
-                    break;
-            }
+//        L::l("prepare==>" + pattern);
+        const std::regex regexParam(R"(%(-?[\d]+)?(\.?(-?[\d]+))?([a-zA-Z]*)(\{(.*?)\})?)");
+        std::smatch match;
+        std::string::const_iterator itor = pattern.cbegin();
+        while (regex_search(itor, pattern.cend(), match, regexParam)) {
+            itor = match[0].second;
 
+            auto fi = new FormatInfo();
+            fi->fullKey = match[0].str();
+            fi->min = match[1].str();
+            fi->max = match[3].str();
+            fi->key = match[4].str();
+            fi->param = match[6].str();
+            infos.push_back(fi);
         }
+
+//        for (auto it: infos) {
+//            it->print();
+//        }
     }
 } // log4cpp2

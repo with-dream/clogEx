@@ -24,8 +24,8 @@ namespace log4cpp2 {
     }
 
     void Console::realCallAppender(LogEvent *logEvent) {
-        char *msg = layout->toSerializable(logEvent);
-        std::string str(msg);
-        this->sole->log(str, WARN.level);
+//        char *msg = layout->toSerializable(logEvent);
+//        std::string str(msg);
+//        this->sole->log(str, WARN.level);
     }
 } // log4cpp2

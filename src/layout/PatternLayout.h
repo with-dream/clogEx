@@ -17,7 +17,7 @@ namespace log4cpp2 {
     public:
         static const char *TAG;
         Config *config;
-        std::vector<FormatInfo> infos;
+        std::vector<FormatInfo *> infos;
     private:
         void prepare(std::string &pattern);
     public:

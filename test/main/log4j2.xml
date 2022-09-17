@@ -8,12 +8,13 @@
         <Property name="level">debug</Property>
         <Property name="fileName">./logs/test-program</Property>
         <Property name="fileGz">./logs/test-program</Property>
-        <Property name="tt1">${fileGz}</Property>
-        <Property name="tt2">${tt3}</Property>
-        <Property name="tt3">${tt2}</Property>
-        <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} ${ctx:t1} ${t1} ${tt2} ${tt1} [%t] %-5level - %logger{36}.%M[%L] - %msg%xEx ${event:ThreadId} ${java:version} %n
-        </Property>
+        <Property name="LOG_PATTERN">${LOG_PATTERN} ${tt1} ${tt2} ${tt8} ${tt9} ${ctx:t1} %-5levelsss - %logger{3.6}.%M[%L] - %msg%xEx   ${event:threadId} ${java:version}%n</Property>
+        <Property name="tt9">999</Property>
+        <Property name="tt8">${tt9}</Property>
+        <Property name="tt1">22${tt2}22${tt9}</Property>
+        <Property name="tt2">11${tt1}11</Property>
     </Properties>
+<!--    <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} ${ctx:t1} $${t1} ${tt2} ${tt1} [%t] %-5.-10level - %logger{36}.%M[%L] - %msg%xEx ${event:ThreadId} ${java:version} %n-->
 
     <Filters>
 

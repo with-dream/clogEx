@@ -11,8 +11,14 @@ namespace log4cpp2 {
 
     class FormatInfo {
     public:
+        std::string fullKey;
         std::string key;
+        std::string min;
+        std::string max;
         std::string type;
+        std::string param;
+    public:
+        void print();
     };
 
 } // log4cpp2

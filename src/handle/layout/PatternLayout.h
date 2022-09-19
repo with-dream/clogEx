@@ -8,7 +8,7 @@
 #include <map>
 
 #include "Layout.h"
-#include "../config/Config.h"
+#include "../../config/Config.h"
 #include "converter/FormatInfo.h"
 
 namespace log4cpp2 {

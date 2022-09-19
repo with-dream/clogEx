@@ -29,6 +29,7 @@ namespace log4cpp2 {
         NormalLogEvent();
         NormalLogEvent(std::string loggerName, Marker *marker, const Level &level, Message *message);
         std::string getMsg();
+        Level getLevel();
     };
 
 }

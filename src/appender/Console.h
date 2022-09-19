@@ -6,13 +6,13 @@
 #define LOGEX_CONSOLE_H
 
 #include "Appender.h"
-#include "../platform/console/MultipleConsole.h"
+#include "../platform/console/ConsoleWriter.h"
 
 namespace log4cpp2 {
     class LogEvent;
     class Console : public Appender {
     private:
-        MultipleConsole *sole;
+        ConsoleWriter *sole;
     public:
         const static char *TAG;
         const static std::string SYSTEM_OUT;

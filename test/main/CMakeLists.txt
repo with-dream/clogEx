@@ -16,8 +16,8 @@ set(src_list
         ../../src/appender/Console.h
         ../../src/filter/Filter.cpp
         ../../src/filter/Filter.h
-        ../../src/layout/Layout.cpp
-        ../../src/layout/Layout.h
+        ../../src/handle/layout/Layout.cpp
+        ../../src/handle/layout/Layout.h
         ../../src/policy/Policy.cpp
         ../../src/policy/Policy.h
         ../../src/config/Parse.h
@@ -31,8 +31,8 @@ set(src_list
         ../../src/utils/Exception.h
         ../../src/filter/ThresholdFilter.cpp
         ../../src/filter/ThresholdFilter.h
-        ../../src/layout/PatternLayout.cpp
-        ../../src/layout/PatternLayout.h
+        ../../src/handle/layout/PatternLayout.cpp
+        ../../src/handle/layout/PatternLayout.h
         ../../src/config/ConfigFactory.cpp
         ../../src/config/ConfigFactory.h
         ../../src/LogManager.cpp
@@ -74,7 +74,19 @@ set(src_list
         ../../src/lookup/ContextMapLookup.cpp
         ../../src/lookup/ContextMapLookup.h
         ../../src/utils/TimeUtils.h
-        ../../src/platform/console/MultipleConsole.h ../../src/platform/console/PCConsole.cpp ../../src/platform/console/PCConsole.h ../../src/platform/console/MultipleConsole.cpp ../../src/filter/FilterResult.h ../../src/layout/converter/FormatInfo.cpp ../../src/layout/converter/FormatInfo.h)
+        ../../src/platform/console/ConsoleWriter.h
+        ../../src/platform/console/PCConsole.cpp
+        ../../src/platform/console/PCConsole.h
+        ../../src/platform/console/ConsoleWriter.cpp
+        ../../src/filter/FilterResult.h
+        ../../src/handle/layout/converter/FormatInfo.cpp
+        ../../src/handle/layout/converter/FormatInfo.h
+        ../../src/interceptors/Interceptor.cpp
+        ../../src/interceptors/Interceptor.h
+        ../../src/handle/writer/Writer.cpp
+        ../../src/handle/writer/Writer.h
+        ../../src/interceptors/TempParam.cpp
+        ../../src/interceptors/TempParam.h)
 
 add_executable(logEx
         ${src_list}

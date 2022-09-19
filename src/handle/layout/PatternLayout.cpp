@@ -3,8 +3,8 @@
 //
 
 #include "PatternLayout.h"
-#include "../config/Parse.h"
-#include "../utils/L.h"
+#include "../../config/Parse.h"
+#include "../../utils/L.h"
 
 namespace log4cpp2 {
     const char *PatternLayout::TAG = CLASS_NAME(PatternLayout);

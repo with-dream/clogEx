@@ -10,7 +10,7 @@ namespace log4cpp2 {
 
     class PCConsole {
     public:
-        void realLog(std::string &msg, int level);
+        void realLog(const std::string &msg, int level);
     };
 
 } // log4cpp2

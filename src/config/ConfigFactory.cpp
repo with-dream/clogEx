@@ -6,11 +6,11 @@
 
 #include "../appender/Console.h"
 #include "../filter/ThresholdFilter.h"
-#include "../layout/PatternLayout.h"
 #include "Parse.h"
 #include "../filter/ListWrapFilter.h"
 #include "../utils/L.h"
 #include "../lookup/ContextMapLookup.h"
+#include "../handle/layout/PatternLayout.h"
 
 namespace log4cpp2 {
     void ConfigFactory::createAppenderList(Config *config, std::vector<Param *> &appVector) {

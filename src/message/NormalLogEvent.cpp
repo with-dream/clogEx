@@ -17,4 +17,8 @@ namespace log4cpp2 {
     std::string NormalLogEvent::getMsg() {
         return this->message->getMsg();
     }
+
+    Level NormalLogEvent::getLevel() {
+        return this->level;
+    }
 } // log4cpp2

@@ -7,7 +7,7 @@
 #include <iostream>
 
 namespace log4cpp2 {
-    void PCConsole::realLog(std::string &msg, int level) {
+    void PCConsole::realLog(const std::string &msg, int level) {
         if (level >= WARN.level) {
             std::cerr << msg << std::endl;
         } else {

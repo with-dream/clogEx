@@ -3,11 +3,12 @@
 //
 
 #include "Layout.h"
+#include "../../utils/L.h"
 
 namespace log4cpp2 {
     bool Layout::handle(TempParam *param) {
-        auto result = new TempParam(true);
-        result->param = toSerializable(param->logEvent);
-        return result;
+        std::string *tmpStr = toSerializable(param->logEvent);
+        param->param = (void *)tmpStr;
+        return param->isNext;
     }
 } // log4cpp2

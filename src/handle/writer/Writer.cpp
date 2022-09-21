@@ -3,6 +3,7 @@
 //
 
 #include "Writer.h"
+#include "../../utils/L.h"
 
 namespace log4cpp2 {
     bool Writer::handle(TempParam *param) {

@@ -10,7 +10,7 @@ namespace log4cpp2 {
     }
 
     void ConsoleWriter::log(TempParam *param) {
-        console->realLog(param->logEvent->getMsg(), param->logEvent->getLevel().level);
+        auto tmp = (std::string *)param->param;
+        console->realLog(*tmp, param->logEvent->getLevel().level);
     }
-
 }

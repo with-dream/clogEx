@@ -14,7 +14,7 @@ namespace log4cpp2 {
         auto itName = param.find("name");
         if (itName == param.cend()) THROW_ERR("Appender must have a name")
         this->name = itName->second;
-        this->sole = new ConsoleWriter();
+        writer = new ConsoleWriter();
 
         auto itTarget = param.find("target");
         if (itTarget == param.cend())

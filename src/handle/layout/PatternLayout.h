@@ -20,10 +20,11 @@ namespace log4cpp2 {
         std::vector<FormatInfo *> infos;
     private:
         void prepare(std::string &pattern);
+        void createConstFI(const std::string &fk);
     public:
         PatternLayout() {}
         PatternLayout(Config *config, std::map<std::string, std::string> &param);
-        char *toSerializable(LogEvent *event) override;
+        std::string *toSerializable(LogEvent *event) override;
     };
 
 } // log4cpp2

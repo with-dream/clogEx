@@ -27,6 +27,8 @@ namespace log4cpp2 {
 
         Logger(LoggerContext *context, const std::string &name, MessageFactory *factory);
 
+        ~Logger();
+
         void log(const Level &level, Marker *marker, Message *msg);
 
         void log(const Level &level, Message *msg);
@@ -52,6 +54,7 @@ namespace log4cpp2 {
 
     private:
         virtual bool filter(LogEvent *logEvent);
+        void start();
     };
 
 } // log4cpp2

@@ -5,13 +5,12 @@
 #include "Interceptor.h"
 
 namespace log4cpp2 {
-    void Interceptor::handleNext(std::vector<Interceptor *> &intercepts, int &index, TempParam *param) {
-        if (intercepts.size() >= index)
+    void Interceptor::handleNext(std::vector<Interceptor *> &intercepts, int index, TempParam *param) {
+        if (index >= intercepts.size())
             return;
 
         if (intercepts[index]->handle(param)) {
-            ++index;
-            handleNext(intercepts, index, param);
+            handleNext(intercepts, ++index, param);
         }
     }
 } // log4cpp2

@@ -8,6 +8,6 @@
 
 namespace log4cpp2 {
     void FormatInfo::print() {
-        L::l("FormatInfo fullKey:" + fullKey + "  key:" + key + " min:" + min + " max:" + max + " param:" + param);
+        L::l("FormatInfo fullKey:" + fullKey + "  key:" + key + "  type:" + std::to_string(type) + " min:" + min + " max:" + max + " param:" + param);
     }
 } // log4cpp2

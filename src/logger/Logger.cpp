@@ -11,11 +11,12 @@
 
 namespace log4cpp2 {
     Logger::Logger() {
+        start();
     }
 
     Logger::Logger(LoggerContext *context, const std::string &name, MessageFactory *factory)
             : logContext(context), name(name), messageFactory(factory) {
-
+        start();
     }
 
     void Logger::log(const Level &level, Marker *marker, std::string msg, ...) {
@@ -86,7 +87,7 @@ namespace log4cpp2 {
         for (auto it: logContext->appender) {
             it->callAppender(logEvent);
         }
-        if (logContext->additivity && parent) {
+        if (logContext->additivity && parent) { //TODO 有崩溃
             parent->realLogMessage(logEvent);
         }
     }
@@ -94,5 +95,18 @@ namespace log4cpp2 {
     bool Logger::filter(LogEvent *logEvent) {
         Result res = FilterUtils::filter(logContext->filters, logEvent);
         return FilterUtils::accept(res);
+    }
+
+    void Logger::start() {
+        for (auto it: logContext->appender)
+            if (!it->isStarted)
+                it->start();
+
+    }
+
+    Logger::~Logger() {
+        for (auto it: logContext->appender)
+            if (it->isStarted)
+                it->stop();
     }
 } // log4cpp2

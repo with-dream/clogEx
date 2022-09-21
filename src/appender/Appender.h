@@ -28,6 +28,7 @@ namespace log4cpp2 {
         std::vector<PreWriteInterceptor *> preWrite;
         std::vector<Interceptor *> intercepts;
         std::vector<Policy *> policies;
+        bool isStarted;
     public:
         virtual void start();
         virtual void stop();

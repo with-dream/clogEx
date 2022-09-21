@@ -12,7 +12,7 @@ namespace log4cpp2 {
     class LogEvent;
     class Console : public Appender {
     private:
-        ConsoleWriter *sole;
+
     public:
         const static char *TAG;
         const static std::string SYSTEM_OUT;

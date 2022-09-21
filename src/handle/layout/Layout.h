@@ -15,7 +15,7 @@ namespace log4cpp2 {
     public:
         bool handle(TempParam *param) override;
 
-        virtual char *toSerializable(LogEvent *event) = 0;
+        virtual std::string *toSerializable(LogEvent *event) = 0;
     };
 
 } // log4cpp2

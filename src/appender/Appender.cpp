@@ -3,6 +3,7 @@
 //
 
 #include "Appender.h"
+#include "../utils/L.h"
 
 namespace log4cpp2 {
     void Appender::callAppender(LogEvent *logEvent) {
@@ -14,9 +15,11 @@ namespace log4cpp2 {
         Result res = FilterUtils::filter(filters, logEvent);
         if (!FilterUtils::accept(res)) return;
 
+        L::l("callAppender==>" + logEvent->getMsg());
+
         auto param = new TempParam(true);
         param->logEvent = logEvent;
-        intercepts[0]->handle(param);/start()未调用
+        intercepts[0]->handleNext(intercepts, 0, param);
     }
 
     void Appender::start() {
@@ -27,10 +30,11 @@ namespace log4cpp2 {
         if (!preWrite.empty())
             intercepts.insert(intercepts.end(), preWrite.begin(), preWrite.end());
         intercepts.push_back(writer);
+        isStarted = true;
     }
 
     void Appender::stop() {
-
+        isStarted = false;
     }
 }
 

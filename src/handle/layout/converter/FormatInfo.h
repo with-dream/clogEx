@@ -9,13 +9,17 @@
 
 namespace log4cpp2 {
 
+    typedef enum _FI_TYPE {
+        constantFI, dynamicFI
+    } fiType;
+
     class FormatInfo {
     public:
         std::string fullKey;
+        fiType type;
         std::string key;
         std::string min;
         std::string max;
-        std::string type;
         std::string param;
     public:
         void print();

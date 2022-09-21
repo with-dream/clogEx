@@ -86,7 +86,7 @@ set(src_list
         ../../src/handle/writer/Writer.cpp
         ../../src/handle/writer/Writer.h
         ../../src/interceptors/TempParam.cpp
-        ../../src/interceptors/TempParam.h)
+        ../../src/interceptors/TempParam.h ../../src/handle/layout/converter/FormatConverter.cpp ../../src/handle/layout/converter/FormatConverter.h ../../src/handle/layout/converter/MessagePatternConverter.cpp ../../src/handle/layout/converter/MessagePatternConverter.h ../../src/config/RegisterManager.cpp ../../src/config/RegisterManager.h)
 
 add_executable(logEx
         ${src_list}

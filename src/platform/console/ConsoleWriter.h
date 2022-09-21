@@ -11,7 +11,7 @@
 
 namespace log4cpp2 {
 
-    class ConsoleWriter : Writer {
+    class ConsoleWriter : public Writer {
     private:
         PCConsole *console;
     public:

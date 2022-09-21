@@ -12,7 +12,7 @@ namespace log4cpp2 {
 
     class Interceptor {
     public:
-        virtual void handleNext(std::vector<Interceptor *> &intercepts, int &index, TempParam *param);
+        virtual void handleNext(std::vector<Interceptor *> &intercepts, int index, TempParam *param);
         virtual bool handle(TempParam *param) = 0;
     };
 
